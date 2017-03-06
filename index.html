@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello React</title>
+        <!-- Grab the essential React libraries -->
+        <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+
+        <!-- Grab the Babel library to transpile our React and ES6 code to ES5 -->
+        <!-- NOTE: Don't do this for production apps! Build your code before deployment (we'll touch on this later)! -->
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+        <!-- Some styling -->
+        <style media="screen">
+            .hello-message {
+                color: deeppink; /* or whatever color you want */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Root element to which we attach our rendered React app. -->
+        <div id="root"></div>
+
+        <!-- Where our sexy React magic happens...for now. -->
+        <script type="text/babel">
+            // Your awesome React code goes here...
+            // This is an ES6 class, if you aren't familiar with classes
+            // in JavaScript, then I HIGHLY recommend you get to know them.
+            // Since you'll be seeing them A LOT throughout this course.
+            class HelloMessage extends React.Component {
+                // Constructor for the HelloMessage class.
+                // Takes the props that we pass in when rendering
+                // to the DOM.
+                constructor(props) {
+                    // Call React.Component's constructor with the
+                    // props we pass in. REQUIRED! DON'T FORGET THIS LINE!!!
+                    super(props);
+
+                    // Initialize the state of this component.
+                    // Just setting the internal state of firstName to
+                    // be an empty string.
+                    this.state = {
+                        firstName: ''
+                    };
+
+                    // Bind the context of our handleChange method to
+                    // to the context of 'this' Component.
+                    // Basically, this allows us to use the `this` keyword
+                    // in the `handleChange` method that we define below.
+                    this.handleChange = this.handleChange.bind(this);
+                }
+
+                // Every React component MUST have a render method that
+                // returns a React element (i.e. JSX).
+                render() {
+                    return (
+                        // Remember: if you have multiple elements in your
+                        // React element, you must wrap them in some sort of
+                        // container element (like the div we use here).
+                        //
+                        // Think of JSX as XML or HTML where we can use `{}` to
+                        // sprinkle in bits of JavaScript code to enhance it.
+                        <div className="hello-message">
+                            <h1>Hello, {this.props.data.name}!</h1>
+                            <p>Welcome to my awesome app!</p>
+                            <input type="text" value={this.state.firstName} onChange={this.handleChange}/>
+                        </div>
+                    );
+                }
+
+                // We bound this method to the onChange event that the input
+                // in our component provides. So, whenever the onChange event
+                // is fired in our input element above, this method is called.
+                //
+                // `event` is a reference to the onchange event that is firing
+                // in the input and is used to actually get the changed value of
+                // the text input element.
+                handleChange(event) {
+                    // We simply use the `setState` method of the Component
+                    // and set the state to an object with a new value for our
+                    // firstName state. The value is retrieved from the event
+                    // we passed in.
+                    this.setState({
+                        firstName: event.target.value
+                    });
+
+                    // NOTE: Let's say our state, when it was initialized had
+                    // multiple properties; something like:
+                    // {
+                    //     firstName: '',
+                    //     lastName: ''
+                    // }
+                    //
+                    // If we didn't use `this.setState` and just called
+                    // `this.state` and set the state that way, then we'd
+                    // be overriding our initialized state completely and
+                    // we'd lose our lastName field.
+                    //
+                    // `this.setState` is smart enough to know to only change
+                    // the state that is referenced in the object we pass;
+                    // `firstName`, in our case.
+                }
+            }
+
+            // Some arbitrary data that we'll pass to our React component.
+            let data = {
+                name: 'Donatello'
+            };
+
+            // Finally, we want to render our component to the DOM. So we
+            // call the render method on the ReactDOM class. This method will
+            // then call the render method on the React element that we pass in
+            // at the location in DOM that we provide.
+            ReactDOM.render(
+                // Our component with the data property set to our data variable.
+                <HelloMessage data={data}/>,
+                // The location where we want to render the component (our root div).
+                document.getElementById("root"));
+        </script>
+    </body>
+</html>
